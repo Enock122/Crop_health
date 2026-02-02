@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Detection History - Crop Health System{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4"><i class="fas fa-history text-success"></i> Detection History</h2>
+    
+    {% if detections.items %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>Date</th>
+                    <th>Crop Type</th>
+                    <th>Disease Detected</th>
+                    <th>Confidence</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detection in detections.items %}
+                <tr>
+                    <td>{{ detection.detection_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                    <td><span class="badge bg-primary">{{ detection.crop_type }}</span></td>
+                    <td>
+                        <span class="badge {% if detection.disease_detected == 'Healthy' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                            {{ detection.disease_detected }}
+                        </span>
+                    </td>
+                    <td>{{ (detection.confidence * 100) | round(2) }}%</td>
+                    <td>
+                        <img src="{{ url_for('static', filename=detection.image_path) }}" 
+                             alt="Crop" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-info" onclick="viewDetails({{ detection.id }}, '{{ detection.crop_type }}', '{{ detection.disease_detected }}', {{ detection.confidence }}, '{{ url_for('static', filename=detection.image_path) }}', {{ detection.recommendations | tojson }})">
+                            <i class="fas fa-eye"></i> View
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if detections.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('history', page=detections.prev_num) }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            {% for page_num in detections.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if page_num %}
+                    <li class="page-item {% if page_num == detections.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('history', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if detections.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('history', page=detections.next_num) }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> No detection history yet. Start by uploading crop images from your dashboard.
+    </div>
+    {% endif %}
+</div>
+
+<!-- Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="fas fa-info-circle"></i> Detection Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="modalImage" src="" alt="Crop Image" class="img-fluid rounded shadow">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Crop: <span id="modalCrop" class="text-success"></span></h5>
+                        <h5>Disease: <span id="modalDisease" class="text-warning"></span></h5>
+                        <h5>Confidence: <span id="modalConfidence"></span>%</h5>
+                        <hr>
+                        <div class="card mb-2">
+                            <div class="card-header bg-light">
+                                <strong>Description</strong>
+                            </div>
+                            <div class="card-body">
+                                <p id="modalDescription"></p>
+                            </div>
+                        </div>
+                        <div class="card mb-2">
+                            <div class="card-header bg-light">
+                                <strong>Treatment</strong>
+                            </div>
+                            <div class="card-body">
+                                <p id="modalTreatment"></p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <strong>Prevention</strong>
+                            </div>
+                            <div class="card-body">
+                                <p id="modalPrevention"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function viewDetails(id, crop, disease, confidence, imageUrl, recommendations) {
+    const rec = JSON.parse(recommendations);
+    
+    $('#modalImage').attr('src', imageUrl);
+    $('#modalCrop').text(crop);
+    $('#modalDisease').text(disease);
+    $('#modalConfidence').text((confidence * 100).toFixed(2));
+    $('#modalDescription').text(rec.description || 'N/A');
+    $('#modalTreatment').text(rec.treatment || 'N/A');
+    $('#modalPrevention').text(rec.prevention || 'N/A');
+    
+    const modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+    modal.show();
+}
+</script>
+{% endblock %}

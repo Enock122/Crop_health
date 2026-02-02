@@ -1,0 +1,305 @@
+/* Crop Health Monitoring System - Custom Styles */
+
+:root {
+    --primary-green: #f5e508;
+    --dark-green: #dae909;
+    --light-green: #a8e6cf;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e3e6e9;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.hero-section {
+    background-size: cover;
+    background-position: center;
+}
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.btn-success {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.btn-success:hover {
+    background-color: var(--dark-green);
+    border-color: var(--dark-green);
+}
+
+.bg-success {
+    background-color: var(--primary-green) !important;
+}
+
+.text-success {
+    color: var(--primary-green) !important;
+}
+
+/* Image preview */
+#imagePreview img {
+    border: 3px solid var(--primary-green);
+}
+
+/* Loading spinner */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Statistics cards */
+.card.bg-primary,
+.card.bg-success,
+.card.bg-warning,
+.card.bg-info {
+    transition: all 0.3s ease;
+}
+
+.card.bg-primary:hover,
+.card.bg-success:hover,
+.card.bg-warning:hover,
+.card.bg-info:hover {
+    transform: scale(1.05);
+}
+
+/* Results section */
+#results .card {
+    margin-bottom: 0.5rem;
+}
+
+/* Crop images in history */
+.img-thumbnail {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.img-thumbnail:hover {
+    transform: scale(1.1);
+}
+
+/* Chart containers */
+canvas {
+    max-height: 400px;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+footer a {
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: var(--light-green) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 400px;
+    }
+    
+    .display-3 {
+        font-size: 2rem;
+    }
+    
+    .lead {
+        font-size: 1rem;
+    }
+}
+
+/* Animation for alerts */
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.alert {
+    animation: slideIn 0.3s ease;
+}
+
+/* Weather card gradient */
+.bg-gradient {
+    background: linear-gradient(135deg, #2144df 0%, #764ba2 100%);
+}
+
+/* Accordion custom styles */
+.accordion-button:not(.collapsed) {
+    background-color: var(--light-green);
+    color: #000;
+}
+
+/* Custom badges */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
+}
+
+/* Table hover effect */
+.table-hover tbody tr:hover {
+    background-color: rgba(46, 204, 113, 0.1);
+}
+
+/* Form focus */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 0.25rem rgba(46, 204, 113, 0.25);
+}
+
+/* Modal improvements */
+.modal-header.bg-success {
+    background-color: var(--primary-green) !important;
+}
+
+/* Pagination */
+.page-item.active .page-link {
+    background-color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.page-link {
+    color: var(--primary-green);
+}
+
+.page-link:hover {
+    color: var(--dark-green);
+}
+
+/* Loading state for buttons */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Success animation */
+@keyframes successPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.success-animation {
+    animation: successPulse 0.5s ease;
+}
+
+/* Error message styling */
+#errorMessage {
+    border-left: 4px solid #dc3545;
+}
+
+/* Results section animation */
+#results {
+    animation: slideIn 0.5s ease;
+}
+
+/* Community cards */
+.card.text-center .card-body {
+    padding: 2rem;
+}
+
+/* Weather icon animations */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+#weatherIcon {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Soil analysis cards */
+.card h3 {
+    font-weight: bold;
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    footer,
+    .btn,
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* Accessibility improvements */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid var(--primary-green);
+    outline-offset: 2px;
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Tooltips */
+[data-bs-toggle="tooltip"] {
+    cursor: help;
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-green);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--dark-green);
+}

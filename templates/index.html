@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section text-white text-center py-5" style="background: linear-gradient(135deg, #2ecc71, #27ae60); min-height: 500px; display: flex; align-items: center;">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-4">Intelligent Agricultural Crop Health Monitoring</h1>
+        <p class="lead mb-4">AI-Powered Disease Detection for Your Crops</p>
+        <p class="mb-5">Upload crop images, get instant disease diagnosis, and receive expert treatment recommendations</p>
+        {% if not session.user_id %}
+        <div>
+            <a href="{{ url_for('register') }}" class="btn btn-light btn-lg me-3">
+                <i class="fas fa-user-plus"></i> Get Started
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+        </div>
+        {% else %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-light btn-lg">
+            <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row text-center mb-5">
+        <div class="col-md-12">
+            <h2 class="mb-4">Why Choose Our System?</h2>
+            <p class="lead text-muted">Advanced AI technology to protect your crops</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-camera fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Easy Image Upload</h5>
+                    <p class="card-text">Simply capture or upload a photo of your crop. Our system validates that images contain actual crop content.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-brain fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">AI Disease Detection</h5>
+                    <p class="card-text">Advanced machine learning algorithms analyze your images and detect diseases with high accuracy.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-prescription-bottle fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Expert Recommendations</h5>
+                    <p class="card-text">Get detailed treatment plans, prevention strategies, and management guidelines instantly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mt-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-cloud-sun fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Weather Integration</h5>
+                    <p class="card-text">Real-time weather forecasting to help you plan farm activities and prevent disease outbreaks.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-microscope fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Soil Analysis</h5>
+                    <p class="card-text">Comprehensive soil health monitoring and nutrient management recommendations.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="fas fa-users fa-3x text-success"></i>
+                    </div>
+                    <h5 class="card-title">Farmer Community</h5>
+                    <p class="card-text">Connect with other farmers, share experiences, and learn from agricultural experts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2 class="mb-4">Supported Crops</h2>
+                <p class="lead text-muted mb-4">Our system supports disease detection for over 10 major crop types</p>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Tomato</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Potato</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Corn</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Wheat</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Rice</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Cotton</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Sugarcane</h6>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="card text-center p-3">
+                    <i class="fas fa-seedling fa-2x text-success mb-2"></i>
+                    <h6>Soybean</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h2 class="mb-4">How It Works</h2>
+            <p class="lead text-muted mb-5">Simple 3-step process to protect your crops</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <div class="mb-3">
+                <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <span class="h2 mb-0">1</span>
+                </div>
+            </div>
+            <h5>Upload Image</h5>
+            <p class="text-muted">Take a clear photo of your crop showing the affected area</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="mb-3">
+                <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <span class="h2 mb-0">2</span>
+                </div>
+            </div>
+            <h5>AI Analysis</h5>
+            <p class="text-muted">Our AI system analyzes the image and detects any diseases</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <div class="mb-3">
+                <div class="rounded-circle bg-success text-white d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <span class="h2 mb-0">3</span>
+                </div>
+            </div>
+            <h5>Get Results</h5>
+            <p class="text-muted">Receive diagnosis and treatment recommendations instantly</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

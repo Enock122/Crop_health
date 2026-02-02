@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - Crop Health System{% endblock %}
+
+{% block extra_css %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4"><i class="fas fa-chart-bar text-success"></i> Analytics Dashboard</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5><i class="fas fa-info-circle"></i> Overview</h5>
+                    <p class="lead">Total Scans: <strong>{{ total_scans }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Crop-wise Analysis</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="cropChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Disease Frequency</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="diseaseChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Detailed Statistics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Crop Type</th>
+                                    <th>Total Scans</th>
+                                    <th>Healthy</th>
+                                    <th>Diseased</th>
+                                    <th>Health Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for crop, stats in crop_stats.items() %}
+                                <tr>
+                                    <td><strong>{{ crop }}</strong></td>
+                                    <td>{{ stats.total }}</td>
+                                    <td><span class="badge bg-success">{{ stats.healthy }}</span></td>
+                                    <td><span class="badge bg-warning text-dark">{{ stats.diseased }}</span></td>
+                                    <td>
+                                        {% if stats.total > 0 %}
+                                        {{ ((stats.healthy / stats.total) * 100) | round(1) }}%
+                                        {% else %}
+                                        0%
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Crop-wise Chart
+const cropData = {{ crop_stats | tojson }};
+const cropLabels = Object.keys(cropData);
+const cropHealthy = cropLabels.map(crop => cropData[crop].healthy);
+const cropDiseased = cropLabels.map(crop => cropData[crop].diseased);
+
+const cropCtx = document.getElementById('cropChart').getContext('2d');
+new Chart(cropCtx, {
+    type: 'bar',
+    data: {
+        labels: cropLabels,
+        datasets: [
+            {
+                label: 'Healthy',
+                data: cropHealthy,
+                backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                borderColor: 'rgba(40, 167, 69, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Diseased',
+                data: cropDiseased,
+                backgroundColor: 'rgba(255, 193, 7, 0.7)',
+                borderColor: 'rgba(255, 193, 7, 1)',
+                borderWidth: 1
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Disease Frequency Chart
+const diseaseData = {{ disease_freq | tojson }};
+const diseaseLabels = Object.keys(diseaseData);
+const diseaseCounts = Object.values(diseaseData);
+
+const diseaseCtx = document.getElementById('diseaseChart').getContext('2d');
+new Chart(diseaseCtx, {
+    type: 'pie',
+    data: {
+        labels: diseaseLabels,
+        datasets: [{
+            data: diseaseCounts,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 206, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)',
+                'rgba(255, 159, 64, 0.7)',
+                'rgba(199, 199, 199, 0.7)',
+                'rgba(83, 102, 255, 0.7)'
+            ],
+            borderColor: 'rgba(255, 255, 255, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

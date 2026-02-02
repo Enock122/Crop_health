@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Crop Health System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">
+                        <i class="fas fa-user-plus text-success"></i> Farmer Registration
+                    </h2>
+                    <form method="POST" action="{{ url_for('register') }}">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username *</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email *</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password *</label>
+                            <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                            <small class="text-muted">Minimum 6 characters</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="+254...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="farm_location" class="form-label">Farm Location</label>
+                            <input type="text" class="form-control" id="farm_location" name="farm_location" placeholder="e.g., Embu County">
+                        </div>
+                        <div class="mb-3">
+                            <label for="farm_size" class="form-label">Farm Size</label>
+                            <select class="form-select" id="farm_size" name="farm_size">
+                                <option value="">Select farm size</option>
+                                <option value="Small (< 1 acre)">Small (< 1 acre)</option>
+                                <option value="Medium (1-5 acres)">Medium (1-5 acres)</option>
+                                <option value="Large (5-10 acres)">Large (5-10 acres)</option>
+                                <option value="Commercial (> 10 acres)">Commercial (> 10 acres)</option>
+                            </select>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-check"></i> Register
+                            </button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

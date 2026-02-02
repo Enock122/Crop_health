@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block title %}Soil Analysis - Crop Health System{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4"><i class="fas fa-microscope text-success"></i> Soil Analysis & Management</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> <strong>Feature Coming Soon!</strong> 
+                Full soil analysis integration is under development. Meanwhile, use the soil health checklist and NPK calculator below.
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-calculator"></i> NPK Calculator</h5>
+                </div>
+                <div class="card-body">
+                    <p>Calculate the amount of NPK fertilizer needed for your farm.</p>
+                    
+                    <div class="mb-3">
+                        <label for="farmArea" class="form-label">Farm Area (acres)</label>
+                        <input type="number" class="form-control" id="farmArea" step="0.1" min="0.1">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="cropType" class="form-label">Crop Type</label>
+                        <select class="form-select" id="cropType">
+                            <option value="">Select crop...</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="potato">Potato</option>
+                            <option value="corn">Corn/Maize</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="beans">Beans</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-success w-100" onclick="calculateNPK()">
+                        <i class="fas fa-calculator"></i> Calculate
+                    </button>
+                    
+                    <div id="npkResults" style="display: none;" class="mt-3">
+                        <div class="alert alert-success">
+                            <h6>Recommended NPK Application:</h6>
+                            <p id="npkAmount"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-clipboard-check"></i> Soil Health Checklist</h5>
+                </div>
+                <div class="card-body">
+                    <p>Check the indicators of healthy soil:</p>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check1">
+                        <label class="form-check-label" for="check1">
+                            Dark, rich color (indicates organic matter)
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check2">
+                        <label class="form-check-label" for="check2">
+                            Good structure (crumbly, not compacted)
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check3">
+                        <label class="form-check-label" for="check3">
+                            Earthworms present (indicate good biology)
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check4">
+                        <label class="form-check-label" for="check4">
+                            Good drainage (water doesn't pool)
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check5">
+                        <label class="form-check-label" for="check5">
+                            Sweet or earthy smell (not sour)
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check6">
+                        <label class="form-check-label" for="check6">
+                            Plants grow vigorously
+                        </label>
+                    </div>
+                    
+                    <button class="btn btn-info w-100 mt-3" onclick="assessSoilHealth()">
+                        <i class="fas fa-check"></i> Assess Soil Health
+                    </button>
+                    
+                    <div id="healthResults" style="display: none;" class="mt-3">
+                        <div class="alert" id="healthAlert">
+                            <h6 id="healthTitle"></h6>
+                            <p id="healthAdvice"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-flask"></i> Understanding NPK</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <h3 class="text-primary">N</h3>
+                                    <h6>Nitrogen</h6>
+                                    <p class="small">
+                                        Promotes leaf growth and green color. Essential for vegetative development.
+                                        <br><strong>Deficiency:</strong> Yellowing leaves
+                                        <br><strong>Sources:</strong> Urea, CAN
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <h3 class="text-danger">P</h3>
+                                    <h6>Phosphorus</h6>
+                                    <p class="small">
+                                        Supports root development and flowering. Critical for energy transfer.
+                                        <br><strong>Deficiency:</strong> Purple leaves
+                                        <br><strong>Sources:</strong> DAP, TSP
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-3">
+                                <div class="card-body text-center">
+                                    <h3 class="text-warning">K</h3>
+                                    <h6>Potassium</h6>
+                                    <p class="small">
+                                        Enhances disease resistance and fruit quality. Regulates water uptake.
+                                        <br><strong>Deficiency:</strong> Brown leaf edges
+                                        <br><strong>Sources:</strong> Muriate of Potash
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-leaf"></i> Soil Improvement Tips</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-success"><i class="fas fa-seedling"></i> Organic Matter</h6>
+                            <ul>
+                                <li>Add compost regularly (2-3 inches annually)</li>
+                                <li>Use cover crops between seasons</li>
+                                <li>Apply animal manure (well-decomposed)</li>
+                                <li>Leave crop residues in the field</li>
+                            </ul>
+                            
+                            <h6 class="text-success mt-3"><i class="fas fa-water"></i> pH Management</h6>
+                            <ul>
+                                <li>Test soil pH annually</li>
+                                <li>Add lime to raise pH (acidic soils)</li>
+                                <li>Add sulfur to lower pH (alkaline soils)</li>
+                                <li>Target pH: 6.0-7.0 for most crops</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-success"><i class="fas fa-sync-alt"></i> Crop Rotation</h6>
+                            <ul>
+                                <li>Rotate crops every season</li>
+                                <li>Include legumes to fix nitrogen</li>
+                                <li>Avoid same crop family in succession</li>
+                                <li>Break pest and disease cycles</li>
+                            </ul>
+                            
+                            <h6 class="text-success mt-3"><i class="fas fa-shield-alt"></i> Erosion Control</h6>
+                            <ul>
+                                <li>Use contour plowing on slopes</li>
+                                <li>Plant grass strips between fields</li>
+                                <li>Apply mulch to bare soil</li>
+                                <li>Build terraces on steep land</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function calculateNPK() {
+    const area = parseFloat($('#farmArea').val());
+    const crop = $('#cropType').val();
+    
+    if (!area || !crop) {
+        alert('Please fill in all fields');
+        return;
+    }
+    
+    // NPK recommendations per acre (kg)
+    const npkRates = {
+        tomato: { n: 120, p: 60, k: 80 },
+        potato: { n: 100, p: 50, k: 100 },
+        corn: { n: 80, p: 40, k: 40 },
+        wheat: { n: 60, p: 30, k: 30 },
+        rice: { n: 90, p: 45, k: 45 },
+        beans: { n: 30, p: 40, k: 40 }
+    };
+    
+    const rate = npkRates[crop];
+    const n = (rate.n * area).toFixed(1);
+    const p = (rate.p * area).toFixed(1);
+    const k = (rate.k * area).toFixed(1);
+    
+    $('#npkAmount').html(`
+        <strong>For ${area} acres of ${crop}:</strong><br>
+        • Nitrogen (N): ${n} kg<br>
+        • Phosphorus (P): ${p} kg<br>
+        • Potassium (K): ${k} kg<br><br>
+        <small class="text-muted">Apply in splits: 50% at planting, 50% at mid-growth stage</small>
+    `);
+    
+    $('#npkResults').show();
+}
+
+function assessSoilHealth() {
+    let checked = 0;
+    for (let i = 1; i <= 6; i++) {
+        if ($(`#check${i}`).is(':checked')) checked++;
+    }
+    
+    const percentage = (checked / 6) * 100;
+    let alertClass, title, advice;
+    
+    if (percentage >= 80) {
+        alertClass = 'alert-success';
+        title = 'Excellent Soil Health!';
+        advice = 'Your soil is in great condition. Continue with your current practices and maintain regular monitoring.';
+    } else if (percentage >= 60) {
+        alertClass = 'alert-info';
+        title = 'Good Soil Health';
+        advice = 'Your soil is generally healthy but has room for improvement. Consider adding organic matter and ensuring proper drainage.';
+    } else if (percentage >= 40) {
+        alertClass = 'alert-warning';
+        title = 'Fair Soil Health';
+        advice = 'Your soil needs attention. Focus on improving organic matter content, structure, and drainage. Consider soil testing.';
+    } else {
+        alertClass = 'alert-danger';
+        title = 'Poor Soil Health';
+        advice = 'Your soil requires significant improvement. We recommend professional soil testing and a comprehensive soil improvement plan.';
+    }
+    
+    $('#healthAlert').attr('class', `alert ${alertClass}`);
+    $('#healthTitle').text(title + ` (${checked}/6 indicators)`);
+    $('#healthAdvice').text(advice);
+    $('#healthResults').show();
+}
+</script>
+{% endblock %}

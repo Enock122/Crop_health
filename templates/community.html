@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Farmer Community - Crop Health System{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4"><i class="fas fa-users text-success"></i> Farmer Community</h2>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> <strong>Community Feature Coming Soon!</strong> 
+                The peer-to-peer farmer community platform is under development. Connect, share, and learn from fellow farmers.
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <i class="fas fa-comments fa-3x text-primary mb-3"></i>
+                    <h5>Discussion Forums</h5>
+                    <p class="text-muted">Share experiences and ask questions</p>
+                    <button class="btn btn-primary" disabled>
+                        <i class="fas fa-lock"></i> Coming Soon
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <i class="fas fa-user-friends fa-3x text-success mb-3"></i>
+                    <h5>Expert Advice</h5>
+                    <p class="text-muted">Get guidance from agricultural experts</p>
+                    <button class="btn btn-success" disabled>
+                        <i class="fas fa-lock"></i> Coming Soon
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow text-center">
+                <div class="card-body">
+                    <i class="fas fa-camera fa-3x text-info mb-3"></i>
+                    <h5>Success Stories</h5>
+                    <p class="text-muted">Share and celebrate farming achievements</p>
+                    <button class="btn btn-info" disabled>
+                        <i class="fas fa-lock"></i> Coming Soon
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Agricultural Tips & Best Practices</h5>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="tipsAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tip1">
+                                    <i class="fas fa-tint text-primary me-2"></i> Water Management
+                                </button>
+                            </h2>
+                            <div id="tip1" class="accordion-collapse collapse show" data-bs-parent="#tipsAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Water early morning or evening to reduce evaporation</li>
+                                        <li>Use drip irrigation for water efficiency</li>
+                                        <li>Check soil moisture before watering</li>
+                                        <li>Mulch to retain moisture</li>
+                                        <li>Collect rainwater for irrigation</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tip2">
+                                    <i class="fas fa-bug text-danger me-2"></i> Pest Control
+                                </button>
+                            </h2>
+                            <div id="tip2" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Practice crop rotation to break pest cycles</li>
+                                        <li>Use integrated pest management (IPM)</li>
+                                        <li>Encourage beneficial insects</li>
+                                        <li>Remove infected plants promptly</li>
+                                        <li>Use organic pesticides when possible</li>
+                                        <li>Monitor regularly for early detection</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tip3">
+                                    <i class="fas fa-seedling text-success me-2"></i> Soil Health
+                                </button>
+                            </h2>
+                            <div id="tip3" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Add organic matter regularly</li>
+                                        <li>Practice crop rotation</li>
+                                        <li>Avoid over-tilling</li>
+                                        <li>Use cover crops</li>
+                                        <li>Test soil annually</li>
+                                        <li>Maintain proper pH levels</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tip4">
+                                    <i class="fas fa-calendar-alt text-warning me-2"></i> Crop Planning
+                                </button>
+                            </h2>
+                            <div id="tip4" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Choose varieties suited to your climate</li>
+                                        <li>Plan planting based on rainfall patterns</li>
+                                        <li>Maintain crop diversity</li>
+                                        <li>Keep detailed farm records</li>
+                                        <li>Plan for succession planting</li>
+                                        <li>Consider market demand</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tip5">
+                                    <i class="fas fa-tools text-info me-2"></i> Equipment Maintenance
+                                </button>
+                            </h2>
+                            <div id="tip5" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Clean tools after each use</li>
+                                        <li>Sharpen cutting tools regularly</li>
+                                        <li>Store equipment in dry places</li>
+                                        <li>Service machinery before planting season</li>
+                                        <li>Check irrigation systems for leaks</li>
+                                        <li>Maintain proper inventory of spare parts</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-book"></i> Useful Resources</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="fas fa-link text-primary"></i> 
+                            <a href="https://www.fao.org" target="_blank">FAO - Food and Agriculture Organization</a>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-link text-primary"></i> 
+                            <a href="https://www.kalro.org" target="_blank">KALRO - Kenya Agricultural Research</a>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-link text-primary"></i> 
+                            <a href="#" target="_blank">Ministry of Agriculture</a>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-link text-primary"></i> 
+                            <a href="#" target="_blank">Agricultural Extension Services</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-phone"></i> Emergency Contacts</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Agricultural Extension Officers</strong>
+                        <p class="text-muted mb-1">Get expert advice on crop management</p>
+                        <p><i class="fas fa-phone"></i> +254 723 113 915</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Veterinary Services</strong>
+                        <p class="text-muted mb-1">Animal health and disease control</p>
+                        <p><i class="fas fa-phone"></i> +254 723 113 915</p>
+                    </div>
+                    <div class="mb-3">
+                        <strong>Agricultural Input Suppliers</strong>
+                        <p class="text-muted mb-1">Seeds, fertilizers, and pesticides</p>
+                        <p><i class="fas fa-phone"></i> +254 723 113 915</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

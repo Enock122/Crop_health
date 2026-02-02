@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Weather Forecast - Crop Health System{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">
+        <i class="fas fa-cloud-sun text-success"></i> Weather Forecast
+    </h2>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <h5><i class="fas fa-map-marker-alt"></i> Your Location</h5>
+            <p class="lead">
+                Get weather forecasts for your farm location to plan activities and prevent disease outbreaks.
+            </p>
+
+            <div class="input-group">
+                <input type="text" class="form-control" id="locationInput"
+                       placeholder="Enter your location (e.g., Embu, Kenya)">
+                <button class="btn btn-success" id="getWeatherBtn">
+                    <i class="fas fa-search"></i> Get Weather
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="weatherResults" style="display:none;">
+        <div class="card shadow mb-4"
+             style="background:linear-gradient(135deg,#667eea,#764ba2);">
+            <div class="card-body text-white">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 id="cityName">---</h3>
+                        <h1 id="temperature" class="display-3">--°C</h1>
+                        <h5 id="weatherDesc">---</h5>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i id="weatherIcon" class="fas fa-cloud fa-5x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row text-center mb-4">
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <i class="fas fa-tint fa-2x text-primary"></i>
+                        <h6>Humidity</h6>
+                        <h4 id="humidity">--%</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <i class="fas fa-wind fa-2x text-info"></i>
+                        <h6>Wind</h6>
+                        <h4 id="windSpeed">-- m/s</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <i class="fas fa-compress-arrows-alt fa-2x text-warning"></i>
+                        <h6>Pressure</h6>
+                        <h4 id="pressure">-- hPa</h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <i class="fas fa-eye fa-2x text-secondary"></i>
+                        <h6>Visibility</h6>
+                        <h4 id="visibility">-- km</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h5><i class="fas fa-seedling"></i> Agricultural Recommendations</h5>
+            </div>
+            <div class="card-body" id="farmingAdvice"></div>
+        </div>
+    </div>
+
+    <div id="weatherError" class="alert alert-danger mt-3" style="display:none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span id="errorText"></span>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function () {
+
+    $('#getWeatherBtn').click(function () {
+        const location = $('#locationInput').val().trim();
+        if (!location) {
+            alert('Please enter a location');
+            return;
+        }
+        getWeatherData(location);
+    });
+
+    function getWeatherData(location) {
+        const apiKey = '419ca40f0d85115ddf1522b521e87ae0';
+        const apiUrl =
+            `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${apiKey}&units=metric`;
+
+        $('#weatherError').hide();
+        $('#weatherResults').hide();
+        $('#getWeatherBtn').html('<i class="fas fa-spinner fa-spin"></i> Loading...')
+                           .prop('disabled', true);
+
+        $.ajax({
+            url: apiUrl,
+            method: 'GET',
+            success: function (data) {
+                displayWeatherData(data);
+            },
+            error: function (xhr) {
+                let msg = 'Unable to fetch weather data.';
+                if (xhr.status === 404) msg = 'Location not found.';
+                if (xhr.status === 401) msg = 'Invalid API key.';
+                $('#errorText').text(msg);
+                $('#weatherError').show();
+            },
+            complete: function () {
+                $('#getWeatherBtn')
+                    .html('<i class="fas fa-search"></i> Get Weather')
+                    .prop('disabled', false);
+            }
+        });
+    }
+
+    function displayWeatherData(data) {
+        $('#cityName').text(data.name);
+        $('#temperature').text(Math.round(data.main.temp) + '°C');
+        $('#weatherDesc').text(data.weather[0].description);
+        $('#humidity').text(data.main.humidity + '%');
+        $('#windSpeed').text(data.wind.speed + ' m/s');
+        $('#pressure').text(data.main.pressure + ' hPa');
+        $('#visibility').text((data.visibility / 1000).toFixed(1) + ' km');
+
+        let icon = 'fa-cloud';
+        const main = data.weather[0].main.toLowerCase();
+        if (main.includes('clear')) icon = 'fa-sun';
+        else if (main.includes('rain')) icon = 'fa-cloud-rain';
+        else if (main.includes('thunder')) icon = 'fa-bolt';
+        else if (main.includes('snow')) icon = 'fa-snowflake';
+
+        $('#weatherIcon').attr('class', `fas ${icon} fa-5x`);
+
+        generateFarmingAdvice(data);
+        $('#weatherResults').fadeIn();
+    }
+
+    function generateFarmingAdvice(data) {
+        let advice = '<div class="alert alert-success">';
+
+        if (data.main.temp > 30)
+            advice += '<p><strong>High temperature:</strong> Increase irrigation.</p>';
+        if (data.main.temp < 15)
+            advice += '<p><strong>Low temperature:</strong> Protect crops from cold.</p>';
+        if (data.main.humidity > 80)
+            advice += '<p><strong>High humidity:</strong> Watch for fungal diseases.</p>';
+        if (data.wind.speed > 5)
+            advice += '<p><strong>Strong winds:</strong> Secure tall crops.</p>';
+
+        advice += '<p><strong>Best farm activity time:</strong> Early morning or evening.</p>';
+        advice += '</div>';
+
+        $('#farmingAdvice').html(advice);
+    }
+});
+</script>
+{% endblock %}
