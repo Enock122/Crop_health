@@ -993,5 +993,10 @@ def get_crop_diseases(crop):
     return jsonify({'error': 'Crop not found'}), 404
 
 if __name__ == "__main__":
+    # Ensure tables are created before running the app
+    with app.app_context():
+        db.create_all()  # This creates all tables defined in your models if they don't exist
+
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port, debug=True)
+
