@@ -31,19 +31,6 @@ app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crop_health.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MODEL_PATH = "models/crop_disease_model.h5"
-import os
-import urllib.request
-from tensorflow.keras.models import load_model
-
-MODEL_URL = "https://github.com/Enock122/Crop_health/releases/download/v1.0/crop_disease_model.h5"
-MODEL_PATH = "model.h5"
-
-if not os.path.exists(MODEL_PATH):
-    print("Downloading model...")
-    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
-    print("Model downloaded")
-
-model = load_model(MODEL_PATH)
 
 try:
     model = load_model(MODEL_PATH)
@@ -794,10 +781,17 @@ def dashboard():
         return redirect(url_for('login'))
     
     user = User.query.get(session['user_id'])
-    recent_detections = Detection.query.filter_by(user_id=user.id).order_by(Detection.detection_date.desc()).limit(5).all()
+    if not user:
+        # User doesn't exist in DB
+        session.clear()
+        flash('User not found. Please login again.', 'error')
+        return redirect(url_for('login'))
+    
+    recent_detections = Detection.query.filter_by(user_id=user.id).order_by(
+        Detection.detection_date.desc()
+    ).limit(5).all()
     total_detections = Detection.query.filter_by(user_id=user.id).count()
     
-    # Statistics
     disease_count = Detection.query.filter(
         Detection.user_id == user.id,
         Detection.disease_detected != 'Healthy'
@@ -814,6 +808,7 @@ def dashboard():
                          disease_count=disease_count,
                          healthy_count=healthy_count,
                          supported_crops=SUPPORTED_CROPS)
+
 
 @app.route('/detect', methods=['POST'])
 def detect():
@@ -997,8 +992,6 @@ def get_crop_diseases(crop):
         return jsonify(CROP_DISEASES[crop])
     return jsonify({'error': 'Crop not found'}), 404
 
-import os
-
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=True)
