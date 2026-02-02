@@ -31,6 +31,19 @@ app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///crop_health.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MODEL_PATH = "models/crop_disease_model.h5"
+import os
+import urllib.request
+from tensorflow.keras.models import load_model
+
+MODEL_URL = "https://github.com/Enock122/Crop_health/releases/download/v1.0/crop_disease_model.h5"
+MODEL_PATH = "model.h5"
+
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model...")
+    urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+    print("Model downloaded")
+
+model = load_model(MODEL_PATH)
 
 try:
     model = load_model(MODEL_PATH)
